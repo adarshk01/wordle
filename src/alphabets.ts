@@ -1,4 +1,4 @@
-export const alphabets = [
+export const alphabets: string[] = [
   "Q",
   "W",
   "E",

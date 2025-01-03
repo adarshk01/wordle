@@ -1,9 +1,15 @@
+import { useEffect, useState } from "react";
 import "./App.css";
 import { Box } from "./components/Box";
 
 import { Keys } from "./components/Keys";
 
 function App() {
+  const [index, setIndex] = useState<number>(0);
+  const [value, setValue] = useState<string>("");
+  const [input, setInput] = useState<string[] | null>(Array(5).fill(""));
+  const [allInputs, setAllInputs] = useState<string[][]>([]);
+
   return (
     <div className="h-screen bg-neutral-900 relative flex flex-col  ">
       <div className="fixed  top-[65%] left-80  rotate-[160deg]  ">
@@ -20,27 +26,94 @@ function App() {
         </svg>
       </div>
       <div className="flex justify-center items-start  pt-16">
-        <div className="grid gap-1.5">
+        {/* <div className="grid gap-1.5">
           {Array.from({ length: 6 }).map(function (_, outIndex) {
             return (
               <div key={outIndex} className="grid grid-cols-5 gap-1.5">
                 {Array.from({ length: 5 }).map(function (_, index) {
-                  return <Box key={index} />;
+                  return <Box key={index} value={value} />;
                 })}
               </div>
             );
           })}
+        </div>{" "} */}
+        <div>
+          <div className="flex gap-1.5 mb-1.5">
+            {input?.map(function (i, index) {
+              return <Box key={index} value={i} />;
+            })}
+          </div>
+          <div className="flex gap-1.5 mb-1.5">
+            {input?.map(function (i, index) {
+              return <Box key={index} value={i} />;
+            })}
+          </div>
+          <div className="flex gap-1.5 mb-1.5">
+            {input?.map(function (i, index) {
+              return <Box key={index} value={i} />;
+            })}
+          </div>
+          <div className="flex gap-1.5 mb-1.5">
+            {input?.map(function (i, index) {
+              return <Box key={index} value={i} />;
+            })}
+          </div>
+          <div className="flex gap-1.5 mb-1.5">
+            {" "}
+            {input?.map(function (i, index) {
+              return <Box key={index} value={i} />;
+            })}
+          </div>
+          <div className="flex gap-1.5 mb-1.5">
+            {input?.map(function (i, index) {
+              return <Box key={index} value={i} />;
+            })}
+          </div>
         </div>{" "}
-      </div>{" "}
-      <div className="z-20 mt-10">
-        <Keys start={0} end={10} />
-        <Keys start={10} end={19} />
+      </div>
+      <div className="z-20 mt-10  ">
+        <Keys
+          start={0}
+          end={10}
+          setValue={setValue}
+          input={input}
+          setInput={setInput}
+          index={index}
+          setIndex={setIndex}
+        />
+        <Keys
+          start={10}
+          end={19}
+          setValue={setValue}
+          input={input}
+          setInput={setInput}
+          index={index}
+          setIndex={setIndex}
+        />
         <div className="flex justify-center items-center gap-1.5 h-16 ">
           <div className="text-white h-14 w-fit bg-slate-700 font-bold  px-5 rounded-lg flex justify-center items-center cursor-pointer">
             Enter
           </div>
-          <Keys start={19} end={26} />
-          <div className="text-white h-14 w-fit bg-slate-700 font-bold  px-5 rounded-lg flex justify-center items-center cursor-pointer">
+          <Keys
+            start={19}
+            end={26}
+            setValue={setValue}
+            input={input}
+            setInput={setInput}
+            index={index}
+            setIndex={setIndex}
+          />
+          <div
+            className="text-white h-14 w-fit bg-slate-700 font-bold  px-5 rounded-lg flex justify-center items-center cursor-pointer"
+            onClick={() => {
+              if (input && input[index] != "") {
+                const newInput = input;
+                newInput?.pop();
+                setIndex(index - 1);
+                setInput(newInput);
+              }
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
