@@ -4,14 +4,47 @@ import { Box } from "./components/Box";
 
 import { Keys } from "./components/Keys";
 
-function App() {
-  const [index, setIndex] = useState<number>(0);
-  const [value, setValue] = useState<string>("");
-  const [input, setInput] = useState<string[] | null>(Array(5).fill(""));
-  const [allInputs, setAllInputs] = useState<string[][]>([]);
+interface InputProps {
+  [key: string]: string[];
+}
 
+function App() {
+  const n: number = 6; // Number of keys (e.g., 1 to 6)
+  const m: number = 5;
+  const generateInitialInputs = (n: number, m: number): InputProps => {
+    const initialInputs: InputProps = {};
+    for (let i = 1; i <= n; i++) {
+      initialInputs[i] = Array(m).fill(""); // Create an array with `m` empty strings
+    }
+    return initialInputs;
+  };
+
+  const [index, setIndex] = useState<number>(0);
+
+  // const [value, setValue] = useState<string>("");
+  const [count, setCount] = useState<number>(1);
+  const [input, setInput] = useState<string[] | null>(Array(5).fill(""));
+  const [allInputs, setAllInputs] = useState<InputProps>(
+    generateInitialInputs(n, m)
+  );
+
+  function handleClick() {
+    if (input && input[4] != "") {
+      setAllInputs((prev) => {
+        return {
+          ...prev,
+          [count]: input,
+        };
+      });
+      setCount(count + 1);
+      setIndex(0);
+      setInput(Array(5).fill(""));
+    }
+  }
+
+  console.log(allInputs);
   return (
-    <div className="h-screen bg-neutral-900 relative flex flex-col  ">
+    <div className="h-screen min-h-fit min-w-fit bg-neutral-900 relative flex flex-col  ">
       <div className="fixed  top-[65%] left-80  rotate-[160deg]  ">
         <svg
           viewBox="0 0 200 200"
@@ -38,36 +71,74 @@ function App() {
           })}
         </div>{" "} */}
         <div>
-          <div className="flex gap-1.5 mb-1.5">
-            {input?.map(function (i, index) {
-              return <Box key={index} value={i} />;
-            })}
+          <div className="flex gap-1  mb-1 ">
+            {count == 1
+              ? input?.map(function (i, index) {
+                  return <Box key={index} value={i} />;
+                })
+              : allInputs["1"].map(function (i, index) {
+                  console.log(i);
+                  return <Box key={index} value={i} />;
+                })}
+
+            {/* Object.entries( allInputs?[counter - 1]).map(function (
+                   i,
+                   index
+                 ) {
+                    return <Box key={index} value={i} />;
+                })}  */}
           </div>
-          <div className="flex gap-1.5 mb-1.5">
-            {input?.map(function (i, index) {
-              return <Box key={index} value={i} />;
-            })}
+
+          <div className="flex gap-1  mb-1 ">
+            {count == 2
+              ? input?.map(function (i, index) {
+                  return <Box key={index} value={i} />;
+                })
+              : allInputs["2"].map(function (i, index) {
+                  console.log(i);
+                  return <Box key={index} value={i} />;
+                })}
           </div>
-          <div className="flex gap-1.5 mb-1.5">
-            {input?.map(function (i, index) {
-              return <Box key={index} value={i} />;
-            })}
+
+          <div className="flex gap-1 mb-1">
+            {count == 3
+              ? input?.map(function (i, index) {
+                  return <Box key={index} value={i} />;
+                })
+              : allInputs["3"].map(function (i, index) {
+                  console.log(i);
+                  return <Box key={index} value={i} />;
+                })}
           </div>
-          <div className="flex gap-1.5 mb-1.5">
-            {input?.map(function (i, index) {
-              return <Box key={index} value={i} />;
-            })}
+          <div className="flex gap-1 mb-1">
+            {count == 4
+              ? input?.map(function (i, index) {
+                  return <Box key={index} value={i} />;
+                })
+              : allInputs["4"].map(function (i, index) {
+                  console.log(i);
+                  return <Box key={index} value={i} />;
+                })}
           </div>
-          <div className="flex gap-1.5 mb-1.5">
-            {" "}
-            {input?.map(function (i, index) {
-              return <Box key={index} value={i} />;
-            })}
+          <div className="flex gap-1 mb-1">
+            {count == 5
+              ? input?.map(function (i, index) {
+                  return <Box key={index} value={i} />;
+                })
+              : allInputs["5"].map(function (i, index) {
+                  console.log(i);
+                  return <Box key={index} value={i} />;
+                })}
           </div>
-          <div className="flex gap-1.5 mb-1.5">
-            {input?.map(function (i, index) {
-              return <Box key={index} value={i} />;
-            })}
+          <div className="flex gap-1 mb-1">
+            {count == 6
+              ? input?.map(function (i, index) {
+                  return <Box key={index} value={i} />;
+                })
+              : allInputs["6"].map(function (i, index) {
+                  console.log(i);
+                  return <Box key={index} value={i} />;
+                })}
           </div>
         </div>{" "}
       </div>
@@ -75,7 +146,6 @@ function App() {
         <Keys
           start={0}
           end={10}
-          setValue={setValue}
           input={input}
           setInput={setInput}
           index={index}
@@ -84,20 +154,21 @@ function App() {
         <Keys
           start={10}
           end={19}
-          setValue={setValue}
           input={input}
           setInput={setInput}
           index={index}
           setIndex={setIndex}
         />
         <div className="flex justify-center items-center gap-1.5 h-16 ">
-          <div className="text-white h-14 w-fit bg-slate-700 font-bold  px-5 rounded-lg flex justify-center items-center cursor-pointer">
+          <div
+            className="text-white h-14 w-fit bg-slate-700 font-bold  px-5 rounded-lg flex justify-center items-center cursor-pointer select-none"
+            onClick={() => handleClick()}
+          >
             Enter
           </div>
           <Keys
             start={19}
             end={26}
-            setValue={setValue}
             input={input}
             setInput={setInput}
             index={index}
@@ -106,9 +177,9 @@ function App() {
           <div
             className="text-white h-14 w-fit bg-slate-700 font-bold  px-5 rounded-lg flex justify-center items-center cursor-pointer"
             onClick={() => {
-              if (input && input[index] != "") {
+              if (input && input[index] != "" && index >= 0) {
                 const newInput = input;
-                newInput?.pop();
+                newInput[index] = "";
                 setIndex(index - 1);
                 setInput(newInput);
               }

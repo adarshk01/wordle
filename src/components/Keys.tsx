@@ -1,11 +1,11 @@
 // import { useReducer, useState } from "react";
-import { useState } from "react";
+//https://random-word-api.vercel.app/api?words=1&length=5&type=uppercase
 import { alphabets } from "../alphabets";
 
 interface BoxProps {
   start: number;
   end: number;
-  setValue: (value: string) => void;
+
   input: string[] | null;
 
   setInput: (value: string[]) => void;
@@ -22,7 +22,7 @@ export function Keys({
   setIndex,
 }: BoxProps) {
   function handleClick(c: string) {
-    if (input && input[4] == "") {
+    if (input && input[4] == "" && index < 5) {
       const newArry = [...input];
       newArry[index] = c;
       setIndex(index + 1);
