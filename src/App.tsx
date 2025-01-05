@@ -42,7 +42,6 @@ function App() {
     }
   }
 
-  console.log(allInputs);
   return (
     <div className="h-screen min-h-fit min-w-fit bg-neutral-900 relative flex flex-col  ">
       <div className="fixed  top-[65%] left-80  rotate-[160deg]  ">
@@ -77,7 +76,6 @@ function App() {
                   return <Box key={index} value={i} />;
                 })
               : allInputs["1"].map(function (i, index) {
-                  console.log(i);
                   return <Box key={index} value={i} />;
                 })}
 
@@ -95,7 +93,6 @@ function App() {
                   return <Box key={index} value={i} />;
                 })
               : allInputs["2"].map(function (i, index) {
-                  console.log(i);
                   return <Box key={index} value={i} />;
                 })}
           </div>
@@ -106,7 +103,6 @@ function App() {
                   return <Box key={index} value={i} />;
                 })
               : allInputs["3"].map(function (i, index) {
-                  console.log(i);
                   return <Box key={index} value={i} />;
                 })}
           </div>
@@ -116,7 +112,6 @@ function App() {
                   return <Box key={index} value={i} />;
                 })
               : allInputs["4"].map(function (i, index) {
-                  console.log(i);
                   return <Box key={index} value={i} />;
                 })}
           </div>
@@ -126,7 +121,6 @@ function App() {
                   return <Box key={index} value={i} />;
                 })
               : allInputs["5"].map(function (i, index) {
-                  console.log(i);
                   return <Box key={index} value={i} />;
                 })}
           </div>
@@ -136,7 +130,6 @@ function App() {
                   return <Box key={index} value={i} />;
                 })
               : allInputs["6"].map(function (i, index) {
-                  console.log(i);
                   return <Box key={index} value={i} />;
                 })}
           </div>
@@ -177,9 +170,10 @@ function App() {
           <div
             className="text-white h-14 w-fit bg-slate-700 font-bold  px-5 rounded-lg flex justify-center items-center cursor-pointer"
             onClick={() => {
-              if (input && input[index] != "" && index >= 0) {
+              if (input && index > 0 && index < 6) {
                 const newInput = input;
-                newInput[index] = "";
+
+                newInput[index - 1] = "";
                 setIndex(index - 1);
                 setInput(newInput);
               }

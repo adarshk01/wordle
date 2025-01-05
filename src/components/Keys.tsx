@@ -10,7 +10,7 @@ interface BoxProps {
 
   setInput: (value: string[]) => void;
   index: number;
-  setIndex: (value: number) => void;
+  setIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export function Keys({
@@ -22,10 +22,14 @@ export function Keys({
   setIndex,
 }: BoxProps) {
   function handleClick(c: string) {
-    if (input && input[4] == "" && index < 5) {
+    if (input && index < 5) {
       const newArry = [...input];
       newArry[index] = c;
-      setIndex(index + 1);
+
+      setIndex((prevIndex: number) => {
+        return prevIndex + 1;
+      });
+
       setInput(newArry);
     }
   }
@@ -36,7 +40,7 @@ export function Keys({
         return (
           <div
             key={index}
-            className="text-white h-14 w-12 bg-slate-600 font-bold text-xl rounded-lg flex justify-center items-center cursor-pointer select-none"
+            className="text-white h-14 w-12 bg-slate-600 font-bold text-xl rounded-lg flex justify-center items-center cursor-pointer select-none touch-manipulation"
             onClick={() => handleClick(alphabet)}
           >
             {alphabet}
