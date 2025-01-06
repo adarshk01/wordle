@@ -31,22 +31,37 @@ function App() {
   );
   const [checker, setChecker] = useState(false);
   const prevIndexRef = useRef<number>(index);
-
-  function handleClick() {
+  const [status, setStatus] = useState(false);
+  async function handleClick() {
     if (input && input[4] != "") {
-      const temp = isActive;
-      temp[count - 1] = true;
-      setIsActive(temp);
-      setAllInputs((prev) => {
-        return {
-          ...prev,
-          [count]: input,
-        };
-      });
-      setFlip(true);
-      setCount(count + 1);
-      setIndex(0);
-      setInput(Array(5).fill(""));
+      try {
+        const repo = await axios.get(
+          `https://api.dictionaryapi.dev/api/v2/entries/en/${input.join("")}`
+        );
+        console.log(repo);
+        const temp = isActive;
+        temp[count - 1] = true;
+        setIsActive(temp);
+        setAllInputs((prev) => {
+          return {
+            ...prev,
+            [count]: input,
+          };
+        });
+
+        setCount(count + 1);
+        setIndex(0);
+        setInput(Array(5).fill(""));
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (error.response && error.response.status === 404) {
+            setStatus(true);
+            setTimeout(() => {
+              setStatus(false);
+            }, 1500);
+          }
+        }
+      }
     }
   }
 
@@ -100,6 +115,13 @@ function App() {
             );
           })}
         </div>{" "} */}
+        <div
+          className={`absolute h-fit w-fit p-2 bg-white rounded-lg transition-all  duration-200 text-black z-50 ${
+            status ? "opacity-100 ease-in" : "opacity-0 ease-out"
+          }`}
+        >
+          Invalid word
+        </div>
         <div>
           <div className="flex gap-[5px]  mb-[5px] ">
             {count == 1
@@ -109,7 +131,8 @@ function App() {
                       key={idx}
                       className={`${
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
-                      }`}
+                      }
+                      ${status ? "animate-headShake" : ""}`}
                     >
                       <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
