@@ -20,6 +20,7 @@ function App() {
     return initialInputs;
   };
 
+  const [isActive, setIsActive] = useState<boolean[]>(Array(5).fill(false));
   const [index, setIndex] = useState<number>(0);
   const [flip, setFlip] = useState(false);
   const [guessWord, setGuessWord] = useState<string>("");
@@ -33,6 +34,9 @@ function App() {
 
   function handleClick() {
     if (input && input[4] != "") {
+      const temp = isActive;
+      temp[count - 1] = true;
+      setIsActive(temp);
       setAllInputs((prev) => {
         return {
           ...prev,
@@ -112,13 +116,13 @@ function App() {
                   );
                 })
               : allInputs["1"].map(function (i, idx) {
-                  if (idx == 0) {
-                    console.log("check now");
-                  }
                   return (
-                    <div className={`  `}>
-                      <Box key={idx} value={i} delay={idx} submitted={flip} />
-                    </div>
+                    <Box
+                      key={idx}
+                      value={i}
+                      delay={idx + 1}
+                      submitted={isActive[0]}
+                    />
                   );
                 })}
           </div>
@@ -133,12 +137,19 @@ function App() {
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
                       }`}
                     >
-                      <Box key={idx} value={i} />
+                      <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
                   );
                 })
               : allInputs["2"].map(function (i, idx) {
-                  return <Box key={idx} value={i} />;
+                  return (
+                    <Box
+                      key={idx}
+                      value={i}
+                      delay={idx + 1}
+                      submitted={isActive[1]}
+                    />
+                  );
                 })}
           </div>
 
@@ -152,12 +163,19 @@ function App() {
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
                       }`}
                     >
-                      <Box key={idx} value={i} />
+                      <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
                   );
                 })
               : allInputs["3"].map(function (i, idx) {
-                  return <Box key={idx} value={i} />;
+                  return (
+                    <Box
+                      key={idx}
+                      value={i}
+                      delay={idx + 1}
+                      submitted={isActive[2]}
+                    />
+                  );
                 })}
           </div>
           <div className="flex gap-[5px]  mb-[5px]">
@@ -170,12 +188,19 @@ function App() {
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
                       }`}
                     >
-                      <Box key={idx} value={i} />
+                      <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
                   );
                 })
               : allInputs["4"].map(function (i, idx) {
-                  return <Box key={idx} value={i} />;
+                  return (
+                    <Box
+                      key={idx}
+                      value={i}
+                      delay={idx + 1}
+                      submitted={isActive[3]}
+                    />
+                  );
                 })}
           </div>
           <div className="flex gap-[5px]  mb-[5px]">
@@ -188,12 +213,19 @@ function App() {
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
                       }`}
                     >
-                      <Box key={idx} value={i} />
+                      <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
                   );
                 })
               : allInputs["5"].map(function (i, idx) {
-                  return <Box key={idx} value={i} />;
+                  return (
+                    <Box
+                      key={idx}
+                      value={i}
+                      delay={idx + 1}
+                      submitted={isActive[4]}
+                    />
+                  );
                 })}
           </div>
           <div className="flex gap-[5px]  mb-[5px]">
@@ -206,12 +238,19 @@ function App() {
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
                       }`}
                     >
-                      <Box key={idx} value={i} />
+                      <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
                   );
                 })
               : allInputs["6"].map(function (i, idx) {
-                  return <Box key={idx} value={i} />;
+                  return (
+                    <Box
+                      key={idx}
+                      value={i}
+                      delay={idx + 1}
+                      submitted={isActive[5]}
+                    />
+                  );
                 })}
           </div>
         </div>{" "}
