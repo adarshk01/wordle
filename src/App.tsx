@@ -21,7 +21,7 @@ function App() {
   };
 
   const [index, setIndex] = useState<number>(0);
-
+  const [flip, setFlip] = useState(false);
   const [guessWord, setGuessWord] = useState<string>("");
   const [count, setCount] = useState<number>(1);
   const [input, setInput] = useState<string[] | null>(Array(5).fill(""));
@@ -39,6 +39,7 @@ function App() {
           [count]: input,
         };
       });
+      setFlip(true);
       setCount(count + 1);
       setIndex(0);
       setInput(Array(5).fill(""));
@@ -106,20 +107,20 @@ function App() {
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
                       }`}
                     >
-                      <Box key={idx} value={i} />
+                      <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
                   );
                 })
               : allInputs["1"].map(function (i, idx) {
-                  return <Box key={idx} value={i} />;
+                  if (idx == 0) {
+                    console.log("check now");
+                  }
+                  return (
+                    <div className={`  `}>
+                      <Box key={idx} value={i} delay={idx} submitted={flip} />
+                    </div>
+                  );
                 })}
-
-            {/* Object.entries( allInputs?[counter - 1]).map(function (
-                   i,
-                   index
-                 ) {
-                    return <Box key={index} value={i} />;
-                })}  */}
           </div>
 
           <div className="flex gap-[5px]  mb-[5px] ">
