@@ -1,5 +1,3 @@
-// import { useReducer, useState } from "react";
-//https://random-word-api.vercel.app/api?words=1&length=5&type=uppercase
 import { alphabets } from "../alphabets";
 
 interface BoxProps {
@@ -11,6 +9,7 @@ interface BoxProps {
   setInput: (value: string[]) => void;
   index: number;
   setIndex: React.Dispatch<React.SetStateAction<number>>;
+  typedList: string[] | null;
 }
 
 export function Keys({
@@ -20,6 +19,7 @@ export function Keys({
   setInput,
   index,
   setIndex,
+  typedList,
 }: BoxProps) {
   function handleClick(c: string) {
     if (input && index < 5) {
@@ -37,10 +37,13 @@ export function Keys({
   return (
     <div className="flex justify-center items-center gap-1.5 h-16 ">
       {alphabets.slice(start, end).map(function (alphabet, index) {
+        const isTyped = typedList?.includes(alphabet);
+
         return (
           <div
             key={index}
-            className="text-white h-14 w-12 bg-slate-600 font-bold text-xl rounded-lg flex justify-center items-center cursor-pointer select-none touch-manipulation"
+            className={`text-white h-14 w-12   font-bold text-xl rounded-lg flex justify-center items-center cursor-pointer select-none touch-manipulation transition-all duration-700 ease-in
+               ${isTyped ? "bg-slate-700" : "bg-slate-600"} `}
             onClick={() => handleClick(alphabet)}
           >
             {alphabet}

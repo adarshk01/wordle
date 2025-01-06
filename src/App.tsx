@@ -22,7 +22,8 @@ function App() {
 
   const [isActive, setIsActive] = useState<boolean[]>(Array(5).fill(false));
   const [index, setIndex] = useState<number>(0);
-  const [flip, setFlip] = useState(false);
+
+  const [typedList, setTypedList] = useState<string[]>([]);
   const [guessWord, setGuessWord] = useState<string>("");
   const [count, setCount] = useState<number>(1);
   const [input, setInput] = useState<string[] | null>(Array(5).fill(""));
@@ -48,6 +49,7 @@ function App() {
             [count]: input,
           };
         });
+        setTypedList((prev) => [...prev, ...input]);
 
         setCount(count + 1);
         setIndex(0);
@@ -158,7 +160,7 @@ function App() {
                       key={idx}
                       className={`${
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
-                      }`}
+                      } ${status ? "animate-headShake" : ""}`}
                     >
                       <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
@@ -184,7 +186,7 @@ function App() {
                       key={idx}
                       className={`${
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
-                      }`}
+                      } ${status ? "animate-headShake" : ""}`}
                     >
                       <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
@@ -209,7 +211,7 @@ function App() {
                       key={idx}
                       className={`${
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
-                      }`}
+                      } ${status ? "animate-headShake" : ""}`}
                     >
                       <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
@@ -234,7 +236,7 @@ function App() {
                       key={idx}
                       className={`${
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
-                      }`}
+                      } ${status ? "animate-headShake" : ""}`}
                     >
                       <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
@@ -259,7 +261,7 @@ function App() {
                       key={idx}
                       className={`${
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
-                      }`}
+                      } ${status ? "animate-headShake" : ""}`}
                     >
                       <Box key={idx} value={i} delay={0} submitted={false} />
                     </div>
@@ -286,6 +288,7 @@ function App() {
           setInput={setInput}
           index={index}
           setIndex={setIndex}
+          typedList={typedList}
         />
         <Keys
           start={10}
@@ -294,6 +297,7 @@ function App() {
           setInput={setInput}
           index={index}
           setIndex={setIndex}
+          typedList={typedList}
         />
         <div className="flex justify-center items-center gap-1.5 h-16 ">
           <div
@@ -330,6 +334,7 @@ function App() {
             setInput={setInput}
             index={index}
             setIndex={setIndex}
+            typedList={typedList}
           />
 
           <div
