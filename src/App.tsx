@@ -24,7 +24,7 @@ function App() {
   const [index, setIndex] = useState<number>(0);
 
   const [typedList, setTypedList] = useState<string[]>([]);
-  const [guessWord, setGuessWord] = useState<string>("");
+  const [guessWord, setGuessWord] = useState<string[]>([]);
   const [count, setCount] = useState<number>(1);
   const [input, setInput] = useState<string[] | null>(Array(5).fill(""));
   const [allInputs, setAllInputs] = useState<InputProps>(
@@ -67,16 +67,16 @@ function App() {
     }
   }
 
-  // useEffect(() => {
-  //   async function fetchName() {
-  //     const name = await axios.get(
-  //       "https://random-word-api.vercel.app/api?words=1&length=5&type=uppercase"
-  //     );
+  useEffect(() => {
+    async function fetchName() {
+      const name = await axios.get(
+        "https://random-word-api.vercel.app/api?words=1&length=5&type=uppercase"
+      );
 
-  //     setGuessWord(name.data[0]);
-  //   }
-  //   fetchName();
-  // }, []);
+      setGuessWord(name.data[0].split(""));
+    }
+    fetchName();
+  }, []);
 
   useEffect(() => {
     const prev = prevIndexRef.current;
@@ -104,7 +104,7 @@ function App() {
           />
         </svg>
       </div>
-      <div className="text-white flex justify-center">{guessWord}</div>
+      <div className="text-white flex justify-center">{guessWord.join("")}</div>
       <div className="flex justify-center items-start  pt-16">
         {/* <div className="grid gap-1.5">
           {Array.from({ length: 6 }).map(function (_, outIndex) {
@@ -289,6 +289,7 @@ function App() {
           index={index}
           setIndex={setIndex}
           typedList={typedList}
+          guessWord={guessWord}
         />
         <Keys
           start={10}
@@ -298,6 +299,7 @@ function App() {
           index={index}
           setIndex={setIndex}
           typedList={typedList}
+          guessWord={guessWord}
         />
         <div className="flex justify-center items-center gap-1.5 h-16 ">
           <div
@@ -335,6 +337,7 @@ function App() {
             index={index}
             setIndex={setIndex}
             typedList={typedList}
+            guessWord={guessWord}
           />
 
           <div
