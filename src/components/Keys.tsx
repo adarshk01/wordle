@@ -3,7 +3,7 @@ import { alphabets } from "../alphabets";
 interface BoxProps {
   start: number;
   end: number;
-
+  done: boolean;
   input: string[] | null;
   guessWord: string[];
   setInput: (value: string[]) => void;
@@ -21,11 +21,10 @@ export function Keys({
   setIndex,
   typedList,
   guessWord,
+  done,
 }: BoxProps) {
-  // const [correct, setCorrect] = useState(false);
-
   function handleClick(c: string) {
-    if (input && index < 5) {
+    if (input && index < 5 && !done) {
       const newArry = [...input];
       newArry[index] = c;
 
@@ -36,11 +35,7 @@ export function Keys({
       setInput(newArry);
     }
   }
-  // useEffect(() => {
-  //   if (typedList) {
 
-  //   }
-  // }, [typedList]);
   return (
     <div className="flex justify-center items-center gap-1.5 h-16 ">
       {alphabets.slice(start, end).map(function (alphabet, index) {
@@ -53,7 +48,7 @@ export function Keys({
             className={`text-white h-14 w-12   font-bold text-xl rounded-lg flex justify-center items-center cursor-pointer select-none touch-manipulation transition-all duration-500 ease-out
                ${
                  isCorrect
-                   ? "bg-lime-500"
+                   ? "bg-green-600"
                    : isTyped
                    ? "bg-gray-800"
                    : "bg-slate-600"

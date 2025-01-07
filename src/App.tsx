@@ -22,7 +22,8 @@ function App() {
 
   const [isActive, setIsActive] = useState<boolean[]>(Array(5).fill(false));
   const [index, setIndex] = useState<number>(0);
-
+  const [done, setDone] = useState(false);
+  const [winnerBanner, setWinnerBanner] = useState(false);
   const [typedList, setTypedList] = useState<string[]>([]);
   const [guessWord, setGuessWord] = useState<string[]>([]);
   const [count, setCount] = useState<number>(1);
@@ -39,7 +40,7 @@ function App() {
         const repo = await axios.get(
           `https://api.dictionaryapi.dev/api/v2/entries/en/${input.join("")}`
         );
-        console.log(repo);
+        // console.log(repo);
         const temp = isActive;
         temp[count - 1] = true;
         setIsActive(temp);
@@ -89,6 +90,25 @@ function App() {
     prevIndexRef.current = index;
   }, [index]);
 
+  useEffect(() => {
+    if (
+      count > 1 &&
+      JSON.stringify(guessWord) === JSON.stringify(typedList.slice(-5))
+    ) {
+      const timer = setTimeout(() => {
+        setDone(true);
+        setWinnerBanner(true);
+      }, 2000);
+      const resetTimer = setTimeout(() => {
+        setWinnerBanner(false);
+      }, 5000);
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(resetTimer);
+      };
+    }
+  }, [count]);
+
   return (
     <div className="h-screen min-h-fit min-w-fit bg-neutral-900 relative flex flex-col  ">
       <div className="fixed  top-[65%] left-80  rotate-[160deg]  ">
@@ -119,10 +139,21 @@ function App() {
         </div>{" "} */}
         <div
           className={`absolute h-fit w-fit p-2 bg-white rounded-lg transition-all  duration-200 text-black z-50 ${
-            status ? "opacity-100 ease-in" : "opacity-0 ease-out"
+            status
+              ? "opacity-100 ease-in"
+              : "opacity-0 pointer-events-none ease-out"
           }`}
         >
           Invalid word
+        </div>
+        <div
+          className={`absolute h-fit w-fit p-2 bg-white rounded-lg transition-all  duration-200 text-black z-70 ${
+            winnerBanner
+              ? "opacity-100 ease-in"
+              : "opacity-0 pointer-events-none ease-out"
+          }`}
+        >
+          Well Done!!
         </div>
         <div>
           <div className="flex gap-[5px]  mb-[5px] ">
@@ -136,17 +167,30 @@ function App() {
                       }
                       ${status ? "animate-headShake" : ""}`}
                     >
-                      <Box key={idx} value={i} delay={0} submitted={false} />
+                      <Box
+                        key={idx}
+                        value={i}
+                        delay={0}
+                        submitted={false}
+                        isPresent={false}
+                        correct={false}
+                      />
                     </div>
                   );
                 })
               : allInputs["1"].map(function (i, idx) {
+                  let correct = guessWord[idx] == i;
+
+                  let isThere = guessWord.includes(i);
+
                   return (
                     <Box
                       key={idx}
                       value={i}
                       delay={idx + 1}
                       submitted={isActive[0]}
+                      isPresent={isThere}
+                      correct={correct}
                     />
                   );
                 })}
@@ -162,17 +206,28 @@ function App() {
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
                       } ${status ? "animate-headShake" : ""}`}
                     >
-                      <Box key={idx} value={i} delay={0} submitted={false} />
+                      <Box
+                        key={idx}
+                        value={i}
+                        delay={0}
+                        submitted={false}
+                        isPresent={false}
+                        correct={false}
+                      />
                     </div>
                   );
                 })
               : allInputs["2"].map(function (i, idx) {
+                  let correct = guessWord[idx] == i;
+                  const isThere = guessWord.includes(i);
                   return (
                     <Box
                       key={idx}
                       value={i}
                       delay={idx + 1}
                       submitted={isActive[1]}
+                      isPresent={isThere}
+                      correct={correct}
                     />
                   );
                 })}
@@ -188,17 +243,28 @@ function App() {
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
                       } ${status ? "animate-headShake" : ""}`}
                     >
-                      <Box key={idx} value={i} delay={0} submitted={false} />
+                      <Box
+                        key={idx}
+                        value={i}
+                        delay={0}
+                        submitted={false}
+                        isPresent={false}
+                        correct={false}
+                      />
                     </div>
                   );
                 })
               : allInputs["3"].map(function (i, idx) {
+                  let correct = guessWord[idx] == i;
+                  const isThere = guessWord.includes(i);
                   return (
                     <Box
                       key={idx}
                       value={i}
                       delay={idx + 1}
                       submitted={isActive[2]}
+                      isPresent={isThere}
+                      correct={correct}
                     />
                   );
                 })}
@@ -213,17 +279,28 @@ function App() {
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
                       } ${status ? "animate-headShake" : ""}`}
                     >
-                      <Box key={idx} value={i} delay={0} submitted={false} />
+                      <Box
+                        key={idx}
+                        value={i}
+                        delay={0}
+                        submitted={false}
+                        isPresent={false}
+                        correct={false}
+                      />
                     </div>
                   );
                 })
               : allInputs["4"].map(function (i, idx) {
+                  let correct = guessWord[idx] == i;
+                  const isThere = guessWord.includes(i);
                   return (
                     <Box
                       key={idx}
                       value={i}
                       delay={idx + 1}
                       submitted={isActive[3]}
+                      isPresent={isThere}
+                      correct={correct}
                     />
                   );
                 })}
@@ -238,17 +315,28 @@ function App() {
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
                       } ${status ? "animate-headShake" : ""}`}
                     >
-                      <Box key={idx} value={i} delay={0} submitted={false} />
+                      <Box
+                        key={idx}
+                        value={i}
+                        delay={0}
+                        submitted={false}
+                        isPresent={false}
+                        correct={false}
+                      />
                     </div>
                   );
                 })
               : allInputs["5"].map(function (i, idx) {
+                  let correct = guessWord[idx] == i;
+                  const isThere = guessWord.includes(i);
                   return (
                     <Box
                       key={idx}
                       value={i}
                       delay={idx + 1}
                       submitted={isActive[4]}
+                      isPresent={isThere}
+                      correct={correct}
                     />
                   );
                 })}
@@ -263,17 +351,28 @@ function App() {
                         checker && idx == index - 1 ? "animate-heartBeat" : ""
                       } ${status ? "animate-headShake" : ""}`}
                     >
-                      <Box key={idx} value={i} delay={0} submitted={false} />
+                      <Box
+                        key={idx}
+                        value={i}
+                        delay={0}
+                        submitted={false}
+                        isPresent={false}
+                        correct={false}
+                      />
                     </div>
                   );
                 })
               : allInputs["6"].map(function (i, idx) {
+                  let correct = guessWord[idx] == i;
+                  const isThere = guessWord.includes(i);
                   return (
                     <Box
                       key={idx}
                       value={i}
                       delay={idx + 1}
                       submitted={isActive[5]}
+                      isPresent={isThere}
+                      correct={correct}
                     />
                   );
                 })}
@@ -290,6 +389,7 @@ function App() {
           setIndex={setIndex}
           typedList={typedList}
           guessWord={guessWord}
+          done={done}
         />
         <Keys
           start={10}
@@ -300,6 +400,7 @@ function App() {
           setIndex={setIndex}
           typedList={typedList}
           guessWord={guessWord}
+          done={done}
         />
         <div className="flex justify-center items-center gap-1.5 h-16 ">
           <div
@@ -338,6 +439,7 @@ function App() {
             setIndex={setIndex}
             typedList={typedList}
             guessWord={guessWord}
+            done={done}
           />
 
           <div
