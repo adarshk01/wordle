@@ -138,8 +138,17 @@ function App() {
   }, [count]);
 
   useEffect(() => {
-    if (typedList.length == 30) {
-      setShowWord(true);
+    console.log(
+      guessWord +
+        " " +
+        typedList.slice(-5) +
+        " " +
+        (guessWord.join("") == typedList.slice(-5).join(""))
+    );
+    if (
+      typedList.length == 30 &&
+      guessWord.join("") != typedList.slice(-5).join("")
+    ) {
       const timer = setTimeout(() => {
         setShowWord(true);
       }, 3000);
