@@ -50,7 +50,10 @@ export function Keys({
         if (guessWordStr[index] === alphabet) {
           return "bg-green-600";
         }
-        if (guessWordStr.includes(alphabet)) {
+        if (
+          guessWordStr.includes(alphabet) &&
+          !(guessWordStr[index] === alphabet)
+        ) {
           return "bg-yellow-500";
         }
         return "bg-gray-800";
@@ -61,7 +64,7 @@ export function Keys({
   }
 
   return (
-    <div className="flex justify-center items-center gap-1.5 h-16 ">
+    <div className="flex justify-center items-center gap-1 sm:gap-1.5 sm:h-16 h-auto px-2 sm:px-0">
       {alphabets.slice(start, end).map(function (alphabet, index) {
         // const isTyped = typedList?.includes(alphabet);
         // let perfect;
@@ -75,7 +78,7 @@ export function Keys({
         return (
           <div
             key={index}
-            className={`text-white h-14 w-12   font-bold text-xl rounded-lg flex justify-center items-center cursor-pointer select-none touch-manipulation transition-all duration-500 ease-out
+            className={`text-white sm:h-14 sm:w-12 w-9 h-14  font-bold sm:text-xl text-sm rounded-lg flex justify-center items-center cursor-pointer select-none touch-manipulation transition-all duration-500 ease-out
                ${
                  //  perfect
                  //    ? "bg-green-600"

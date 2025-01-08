@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { Box } from "./components/Box";
-
+import confetti from "canvas-confetti";
 import { Keys } from "./components/Keys";
 import axios from "axios";
 
@@ -10,16 +10,17 @@ interface InputProps {
 }
 
 function App() {
-  const n: number = 6; // Number of keys (e.g., 1 to 6)
+  const n: number = 6;
   const m: number = 5;
   const generateInitialInputs = (n: number, m: number): InputProps => {
     const initialInputs: InputProps = {};
     for (let i = 1; i <= n; i++) {
-      initialInputs[i] = Array(m).fill(""); // Create an array with `m` empty strings
+      initialInputs[i] = Array(m).fill("");
     }
     return initialInputs;
   };
-
+  const [isConfettiRunning, setIsConfettiRunning] = useState(false);
+  const [showWord, setShowWord] = useState(false);
   const [isActive, setIsActive] = useState<boolean[]>(Array(5).fill(false));
   const [index, setIndex] = useState<number>(0);
   const [done, setDone] = useState(false);
@@ -98,10 +99,12 @@ function App() {
     ) {
       const timer = setTimeout(() => {
         setDone(true);
+        setIsConfettiRunning(true);
         setWinnerBanner(true);
       }, 2000);
       const resetTimer = setTimeout(() => {
         setWinnerBanner(false);
+        setIsConfettiRunning(false);
       }, 5000);
       return () => {
         clearTimeout(timer);
@@ -110,13 +113,65 @@ function App() {
     }
   }, [count]);
 
+  useEffect(() => {
+    if (typedList.length == 30) {
+      setShowWord(true);
+      const timer = setTimeout(() => {
+        setShowWord(true);
+      }, 3000);
+      const resetTimer = setTimeout(() => {
+        setShowWord(false);
+      }, 6000);
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(resetTimer);
+      };
+    }
+  }, [typedList]);
+
+  useEffect(() => {
+    if (!isConfettiRunning) return;
+
+    const end = Date.now() + 5 * 1000; // Run for 5 seconds
+    const colors = ["#0EA5E9", "#ffffff"]; // Buckeyes colors
+
+    const frame = () => {
+      confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: colors,
+      });
+      confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: colors,
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      } else {
+        setIsConfettiRunning(false); // Stop confetti after 5 seconds
+      }
+    };
+
+    // Start confetti animation
+    requestAnimationFrame(frame);
+
+    // Cleanup function if the component unmounts
+    return () => setIsConfettiRunning(false);
+  }, [isConfettiRunning]);
+
   return (
     <div className="h-screen min-h-fit min-w-fit bg-neutral-900 relative flex flex-col  ">
-      <div className="fixed  top-[65%] left-80  rotate-[160deg]  ">
+      <div className="fixed  sm:top-[65%] sm:left-80 top-[70%] -left-44 rotate-[160deg]  ">
         <svg
           viewBox="0 0 200 200"
           xmlns="http://www.w3.org/2000/svg"
-          className="h-[900px] w-[900px] blur-[350px]"
+          className="h-[900px] w-[900px] sm:blur-[350px] blur-[96px]"
         >
           <path
             fill="#0F62FE"
@@ -125,7 +180,7 @@ function App() {
           />
         </svg>
       </div>
-      <div className="text-white flex justify-center">{guessWord.join("")}</div>
+      {/* <div className="text-white flex justify-center">{guessWord.join("")}</div> */}
       <div className="flex justify-center items-start  pt-16">
         {/* <div className="grid gap-1.5">
           {Array.from({ length: 6 }).map(function (_, outIndex) {
@@ -148,13 +203,22 @@ function App() {
           Invalid word
         </div>
         <div
-          className={`absolute h-fit w-fit p-2 bg-white rounded-lg transition-all  duration-200 text-black z-70 ${
+          className={`absolute h-fit w-fit p-5 font-bold text-xl bg-white rounded-lg transition-all  duration-200 text-black z-70 ${
             winnerBanner
               ? "opacity-100 ease-in"
               : "opacity-0 pointer-events-none ease-out"
           }`}
         >
-          Well Done!!
+          !!! 7 crore !!!
+        </div>
+        <div
+          className={`absolute h-fit w-fit p-2 bg-white rounded-lg transition-all  duration-200 text-black z-70 ${
+            showWord
+              ? "opacity-100 ease-in"
+              : "opacity-0 pointer-events-none ease-out"
+          }`}
+        >
+          {`The word was ${guessWord.join("")}`}
         </div>
         <div>
           <div className="flex gap-[5px]  mb-[5px] ">
@@ -381,31 +445,35 @@ function App() {
         </div>{" "}
       </div>
       <div className="z-20 mt-5  ">
-        <Keys
-          start={0}
-          end={10}
-          input={input}
-          setInput={setInput}
-          index={index}
-          setIndex={setIndex}
-          typedList={typedList}
-          guessWord={guessWord}
-          done={done}
-        />
-        <Keys
-          start={10}
-          end={19}
-          input={input}
-          setInput={setInput}
-          index={index}
-          setIndex={setIndex}
-          typedList={typedList}
-          guessWord={guessWord}
-          done={done}
-        />
-        <div className="flex justify-center items-center gap-1.5 h-16 ">
+        <div className="sm:mb-0 mb-2">
+          <Keys
+            start={0}
+            end={10}
+            input={input}
+            setInput={setInput}
+            index={index}
+            setIndex={setIndex}
+            typedList={typedList}
+            guessWord={guessWord}
+            done={done}
+          />
+        </div>
+        <div className="sm:mb-0 mb-1">
+          <Keys
+            start={10}
+            end={19}
+            input={input}
+            setInput={setInput}
+            index={index}
+            setIndex={setIndex}
+            typedList={typedList}
+            guessWord={guessWord}
+            done={done}
+          />
+        </div>
+        <div className="flex justify-center items-center sm:gap-1.5 h-16 gap-[1px]">
           <div
-            className="text-white h-14 w-fit bg-slate-700 font-bold  px-5 rounded-lg flex justify-center items-center cursor-pointer"
+            className="text-white h-14 w-fit bg-slate-700 font-bold px-2.5 sm:px-5 rounded-lg flex justify-center items-center cursor-pointer"
             onClick={() => {
               if (input && index > 0 && index < 6) {
                 const newInput = input;
@@ -444,7 +512,7 @@ function App() {
           />
 
           <div
-            className="text-white h-14 w-fit bg-slate-700 font-bold  px-5 rounded-lg flex justify-center items-center cursor-pointer select-none"
+            className="text-white h-14 w-fit bg-slate-700 font-bold px-2 sm:px-5 rounded-lg flex justify-center items-center cursor-pointer select-none"
             onClick={() => handleClick()}
           >
             Enter
