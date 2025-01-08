@@ -4,6 +4,7 @@ import { Box } from "./components/Box";
 import confetti from "canvas-confetti";
 import { Keys } from "./components/Keys";
 import axios from "axios";
+import { Guide } from "./components/Guide";
 
 interface InputProps {
   [key: string]: string[];
@@ -19,6 +20,7 @@ function App() {
     }
     return initialInputs;
   };
+
   const [isConfettiRunning, setIsConfettiRunning] = useState(false);
   const [showWord, setShowWord] = useState(false);
   const [isActive, setIsActive] = useState<boolean[]>(Array(5).fill(false));
@@ -35,6 +37,28 @@ function App() {
   const [checker, setChecker] = useState(false);
   const prevIndexRef = useRef<number>(index);
   const [status, setStatus] = useState(false);
+
+  function showGuide() {
+    setGuide(false);
+    localStorage.setItem("myState", JSON.stringify(guide));
+  }
+
+  function getState() {
+    const savedState = localStorage.getItem("myState");
+    if (savedState) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  const [guide, setGuide] = useState(getState);
+
+  useEffect(() => {
+    if (guide) {
+      localStorage.setItem("myState", JSON.stringify(guide));
+    }
+  }, [guide]);
 
   async function handleClick() {
     if (input && input[4] != "") {
@@ -221,6 +245,15 @@ function App() {
           {`The word was ${guessWord.join("")}`}
         </div>
         <div>
+          <div
+            className={`flex justify-center  absolute z-70  top-32  left-[600px] transition-all duration-100 ${
+              guide
+                ? "opacity-100 ease-in"
+                : "opacity-0 pointer-events-none ease-out"
+            }`}
+          >
+            <Guide setGuide={showGuide} />
+          </div>
           <div className="flex gap-[5px]  mb-[5px] ">
             {count == 1
               ? input?.map(function (i, idx) {
