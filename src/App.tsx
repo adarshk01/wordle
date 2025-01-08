@@ -34,10 +34,11 @@ function App() {
   const [checker, setChecker] = useState(false);
   const prevIndexRef = useRef<number>(index);
   const [status, setStatus] = useState(false);
+
   async function handleClick() {
     if (input && input[4] != "") {
       try {
-        const repo = await axios.get(
+        await axios.get(
           `https://api.dictionaryapi.dev/api/v2/entries/en/${input.join("")}`
         );
         // console.log(repo);
