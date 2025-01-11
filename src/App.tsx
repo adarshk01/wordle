@@ -255,7 +255,7 @@ function App() {
         </div>
         <div>
           <div
-            className={`flex justify-center  absolute z-70  top-32  left-[600px] transition-all duration-100 ${
+            className={`flex justify-center  absolute z-70  top-32 left-14 sm:left-[606px]  transition-all duration-100 ${
               guide
                 ? "opacity-100 ease-in"
                 : "opacity-0 pointer-events-none ease-out"
