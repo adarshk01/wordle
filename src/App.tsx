@@ -138,13 +138,7 @@ function App() {
   }, [count]);
 
   useEffect(() => {
-    console.log(
-      guessWord +
-        " " +
-        typedList.slice(-5) +
-        " " +
-        (guessWord.join("") == typedList.slice(-5).join(""))
-    );
+   
     if (
       typedList.length == 30 &&
       guessWord.join("") != typedList.slice(-5).join("")
