@@ -64,9 +64,9 @@ function App() {
     if (input && input[4] != "") {
       try {
         await axios.get(
-          `https://api.dictionaryapi.dev/api/v2/entries/en/${input.join("")}`
+          `${import.meta.env.VITE_API_DICTIONARY}/${input.join("")}`
         );
-        // console.log(repo);
+
         const temp = isActive;
         temp[count - 1] = true;
         setIsActive(temp);
@@ -96,11 +96,12 @@ function App() {
 
   useEffect(() => {
     async function fetchName() {
-      const name = await axios.get(
-        "https://random-word-api.vercel.app/api?words=1&length=5&type=uppercase"
-      );
-
-      setGuessWord(name.data[0].split(""));
+      const name = await axios.get(`${import.meta.env.VITE_API_ENDPOINT}`);
+      const nameData = name.data;
+      const random = Math.floor(Math.random() * nameData.length);
+      const selectedName = nameData[random];
+      console.log(selectedName);
+      setGuessWord(selectedName.split(""));
     }
     fetchName();
   }, []);
@@ -138,7 +139,6 @@ function App() {
   }, [count]);
 
   useEffect(() => {
-   
     if (
       typedList.length == 30 &&
       guessWord.join("") != typedList.slice(-5).join("")
